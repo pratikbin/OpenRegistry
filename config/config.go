@@ -24,9 +24,10 @@ type (
 		Environment    string    `yaml:"environment" mapstructure:"environment" validate:"required"`
 		WebAppEndpoint string    `yaml:"web_app_url" mapstructure:"web_app_url" validate:"required"`
 		//nolint
-		WebAppRedirectURL       string `yaml:"web_app_redirect_url" mapstructure:"web_app_redirect_url" validate:"required"`
-		WebAppErrorRedirectPath string `yaml:"web_app_error_redirect_path" mapstructure:"web_app_error_redirect_path"`
-		Debug                   bool   `yaml:"debug" mapstructure:"debug"`
+		WebAppRedirectURL       string          `yaml:"web_app_redirect_url" mapstructure:"web_app_redirect_url" validate:"required"`
+		WebAppErrorRedirectPath string          `yaml:"web_app_error_redirect_path" mapstructure:"web_app_error_redirect_path"`
+		Debug                   bool            `yaml:"debug" mapstructure:"debug"`
+		WebAuthnConfig          *WebAuthnConfig `yaml:"web_authn_config" mapstructure:"web_authn_config" validate:"required"`
 	}
 
 	Registry struct {
@@ -85,6 +86,13 @@ type (
 		//nolint
 		ForgotPasswordTemplateId string `yaml:"forgot_password_template_id" mapstructure:"forgot_password_template_id" validate:"required"`
 		WelcomeEmailTemplateId   string `yaml:"welcome_template_id" mapstructure:"welcome_template_id" validate:"required"`
+	}
+
+	WebAuthnConfig struct {
+		RPDisplayName string `yaml:"rp_display_name" mapstructure:"rp_display_name"` // Display Name for your site
+		RPID          string `yaml:"rp_id" mapstructure:"rp_id"`                     // Generally the FQDN for your site
+		RPOrigin      string `yaml:"rp_origin" mapstructure:"rp_origin"`             // The origin URL for WebAuthn requests
+		RPIcon        string `yaml:"rp_icon" mapstructure:"rp_icon"`                 // Optional icon URL for your site
 	}
 )
 

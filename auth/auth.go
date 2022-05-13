@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"github.com/duo-labs/webauthn/webauthn"
+	"log"
 	"time"
 
 	"github.com/containerish/OpenRegistry/config"
@@ -33,6 +35,10 @@ type Authentication interface {
 	ResetForgottenPassword(ctx echo.Context) error
 	ForgotPassword(ctx echo.Context) error
 	Invites(ctx echo.Context) error
+	BeginRegistration(ctx echo.Context) error
+	FinishRegistration(ctx echo.Context) error
+	BeginLogin(ctx echo.Context) error
+	FinishLogin(ctx echo.Context) error
 }
 
 // New is the constructor function returns an Authentication implementation
@@ -51,6 +57,15 @@ func New(
 
 	ghClient := gh.NewClient(nil)
 	emailClient := email.New(c.Email, c.WebAppEndpoint)
+	webAuthN, err := webauthn.New(&webauthn.Config{
+		RPDisplayName: c.WebAuthnConfig.RPDisplayName,
+		RPID:          c.WebAuthnConfig.RPID,
+		RPOrigin:      c.WebAuthnConfig.RPOrigin,
+		RPIcon:        c.WebAuthnConfig.RPIcon,
+	})
+	if err != nil {
+		log.Fatalf("webauthn config is missing")
+	}
 
 	a := &auth{
 		c:               c,
@@ -59,6 +74,7 @@ func New(
 		github:          githubOAuth,
 		ghClient:        ghClient,
 		oauthStateStore: make(map[string]time.Time),
+		webAuthN:        webAuthN,
 		emailClient:     emailClient,
 	}
 
@@ -75,6 +91,7 @@ type (
 		ghClient        *gh.Client
 		oauthStateStore map[string]time.Time
 		c               *config.OpenRegistryConfig
+		webAuthN        *webauthn.WebAuthn
 		emailClient     email.MailService
 	}
 )
