@@ -45,3 +45,8 @@ email:
   verify_template_id: <verify_template_id>
   welcome_template_id: <welcome_template_id>
   forgot_password_template_id: <forgot_password_template_id>
+web_authn_config:
+  rp_display_name: openregistry
+  rp_id: localhost
+  rp_origin: localhost:5000/webauthn
+  rp_icon: https://avatars.githubusercontent.com/u/90045228?v=4
