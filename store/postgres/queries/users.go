@@ -1,4 +1,4 @@
-//nolint
+// nolint
 package queries
 
 var (
@@ -17,6 +17,8 @@ values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`
 	AddOAuthUser            = `insert into users (id, username, email, html_url, created_at, updated_at,
 bio, type, gravatar_id, login, name, node_id, avatar_url, oauth_id, is_active, hireable)
 values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) on conflict (email) do update set username=$2, email=$3`
+	UpdateUserInstallationID = `update users set github_app_installation_id=$1 where username=$2;`
+	GetUserInstallationID    = `select github_app_installation_id from users where username=$1;`
 )
 
 var (

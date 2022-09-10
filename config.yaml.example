@@ -53,3 +53,9 @@ email:
   verify_template_id: <verify_template_id>
   welcome_template_id: <welcome_template_id>
   forgot_password_template_id: <forgot_password_template_id>
+integrations:
+  name: <name-of-integration-like-github>
+  enabled: true
+  app_id: <app_id_int>
+  client_id: <client_id>
+  public_link: <publicly accessible link>

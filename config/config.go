@@ -24,10 +24,11 @@ type (
 		Email          *Email    `yaml:"email" mapstructure:"email" validate:"required"`
 		WebAppEndpoint string    `yaml:"web_app_url" mapstructure:"web_app_url" validate:"required"`
 		//nolint
-		WebAppRedirectURL       string      `yaml:"web_app_redirect_url" mapstructure:"web_app_redirect_url" validate:"required"`
-		WebAppErrorRedirectPath string      `yaml:"web_app_error_redirect_path" mapstructure:"web_app_error_redirect_path"`
-		Environment             Environment `yaml:"environment" mapstructure:"environment" validate:"required"`
-		Debug                   bool        `yaml:"debug" mapstructure:"debug"`
+		WebAppRedirectURL       string       `yaml:"web_app_redirect_url" mapstructure:"web_app_redirect_url" validate:"required"`
+		WebAppErrorRedirectPath string       `yaml:"web_app_error_redirect_path" mapstructure:"web_app_error_redirect_path"`
+		Environment             Environment  `yaml:"environment" mapstructure:"environment" validate:"required"`
+		Integrations            Integrations `yaml:"integrations" mapstructure:"integrations"`
+		Debug                   bool         `yaml:"debug" mapstructure:"debug"`
 	}
 
 	DFS struct {
@@ -43,6 +44,9 @@ type (
 		DFSLinkResolver string `yaml:"dfs_link_resolver" mapstructure:"dfs_link_resolver"`
 		ChunkSize       int    `yaml:"chunk_size" mapstructure:"chunk_size"`
 	}
+
+	// just so that we can retrieve values easily
+	Integrations []*Integation
 
 	Registry struct {
 		TLS           TLS      `yaml:"tls" mapstructure:"tls" validate:"-"`
@@ -99,6 +103,15 @@ type (
 		//nolint
 		ForgotPasswordTemplateId string `yaml:"forgot_password_template_id" mapstructure:"forgot_password_template_id" validate:"required"`
 		WelcomeEmailTemplateId   string `yaml:"welcome_template_id" mapstructure:"welcome_template_id" validate:"required"`
+	}
+
+	Integation struct {
+		Name         string `yaml:"name" mapstructure:"name"`
+		ClientSecret string `yaml:"client_secret" mapstructure:"client_secret"`
+		ClientID     string `yaml:"client_id" mapstructure:"client_id"`
+		PublicLink   string `yaml:"public_link" mapstructure:"public_link"`
+		AppID        int64  `yaml:"app_id" mapstructure:"app_id"`
+		Enabled      bool   `yaml:"enabled" mapstructure:"enabled"`
 	}
 )
 
@@ -185,6 +198,16 @@ func (oc *OpenRegistryConfig) Endpoint() string {
 	default:
 		return fmt.Sprintf("https://%s:%d", oc.Registry.Host, oc.Registry.Port)
 	}
+}
+
+func (itg Integrations) GetGithubConfig() *Integation {
+	for _, cfg := range itg {
+		if cfg.Name == "github" && cfg.Enabled {
+			return cfg
+		}
+	}
+
+	return nil
 }
 
 type Environment int

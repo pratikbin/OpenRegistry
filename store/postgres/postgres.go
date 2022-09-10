@@ -35,6 +35,8 @@ type UserStore interface {
 	AddVerifyEmail(ctx context.Context, userId, token string) error
 	GetVerifyEmail(ctx context.Context, userId string) (string, error)
 	DeleteVerifyEmail(ctx context.Context, userId string) error
+	UpdateInstallationID(ctx context.Context, id, githubUsername string) error
+	GetInstallationID(ctx context.Context, githubUsername string) (string, error)
 }
 
 type RegistryStore interface {

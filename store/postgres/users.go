@@ -193,7 +193,7 @@ func (p *pg) GetUserWithSession(ctx context.Context, sessionId string) (*types.U
 }
 
 // UpdateUser
-//update users set username = $1, email = $2, updated_at = $3 where username = $4
+// update users set username = $1, email = $2, updated_at = $3 where username = $4
 func (p *pg) UpdateUser(ctx context.Context, userId string, u *types.User) error {
 	childCtx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
 	defer cancel()
@@ -218,6 +218,33 @@ func (p *pg) UpdateUserPWD(ctx context.Context, identifier string, newPassword s
 		return fmt.Errorf("error updating user: %s", err)
 	}
 	return nil
+}
+
+func (p *pg) UpdateInstallationID(ctx context.Context, id, githubUsername string) error {
+	childCtx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
+	defer cancel()
+
+	_, err := p.conn.Exec(childCtx, queries.UpdateUserInstallationID, id, githubUsername)
+	if err != nil {
+		return fmt.Errorf("error updating github app installation id: %w", err)
+	}
+
+	return nil
+}
+
+func (p *pg) GetInstallationID(ctx context.Context, githubUsername string) (string, error) {
+	childCtx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
+	defer cancel()
+
+	row := p.conn.QueryRow(childCtx, queries.GetUserInstallationID, githubUsername)
+
+	var installationID string
+	if err := row.Scan(&installationID); err != nil {
+		return "", fmt.Errorf("error getting github app installation id: %w", err)
+	}
+
+	return installationID, nil
+
 }
 
 func (p *pg) AddVerifyEmail(ctx context.Context, token, userId string) error {
@@ -272,7 +299,7 @@ func (p *pg) DeleteUser(ctx context.Context, identifier string) error {
 	return nil
 }
 
-//IsActive - if the user has logged in, isActive returns true
+// IsActive - if the user has logged in, isActive returns true
 // this method is also useful for limiting access of malicious actors
 func (p *pg) IsActive(ctx context.Context, identifier string) bool {
 	childCtx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
