@@ -54,8 +54,8 @@ email:
   welcome_template_id: <welcome_template_id>
   forgot_password_template_id: <forgot_password_template_id>
 integrations:
-  name: <name-of-integration-like-github>
+  name: "openregistry"
   enabled: true
-  app_id: <app_id_int>
-  client_id: <client_id>
-  public_link: <publicly accessible link>
+  app_id: 0
+  client_id: ""
+  public_link: ""

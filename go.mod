@@ -8,6 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.17.8
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.21
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.11
+	github.com/bradleyfalzon/ghinstallation/v2 v2.1.0
 	github.com/fatih/color v1.12.0
 	github.com/go-playground/locales v0.14.0
 	github.com/go-playground/universal-translator v0.18.0
@@ -46,7 +47,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.19 // indirect
 	github.com/aws/smithy-go v1.13.3 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bradleyfalzon/ghinstallation/v2 v2.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
